@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Куба - кофейня</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Куба - кофейня</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="menu.html">Меню</a></li>
+                <li><a href="reservation.html">Бронирование</a></li>
+                <li><a href="cart.html" class="active">Корзина</a></li>
+                <li><a href="contact.html">Контакты</a></li>
+            </ul>
+            <div class="burger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <section class="cart-section">
+        <h2>Ваш заказ</h2>
+        <div class="order-section">
+            <div class="cart">
+                <div id="cartItems">
+                    <!-- Товары будут добавляться динамически -->
+                </div>
+                <div class="cart-total">
+                    <h3>Итого: <span id="totalAmount">0</span> руб.</h3>
+                </div>
+                <button class="btn" onclick="showOrderModal()">Оформить заказ</button>
+                <a href="menu.html" class="btn btn-outline">Продолжить покупки</a>
+            </div>
+        </div>
+    </section>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3>Оформление заказа</h3>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label for="orderName">Ваше имя</label>
+                    <input type="text" id="orderName" required>
+                </div>
+                <div class="form-group">
+                    <label for="orderPhone">Телефон</label>
+                    <input type="tel" id="orderPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="orderAddress">Адрес доставки</label>
+                    <input type="text" id="orderAddress">
+                </div>
+                <div class="form-group">
+                    <label for="orderPayment">Способ оплаты</label>
+                    <select id="orderPayment" required>
+                        <option value="">Выберите способ</option>
+                        <option value="cash">Наличные</option>
+                        <option value="card">Карта онлайн</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="orderComment">Комментарий к заказу</label>
+                    <textarea id="orderComment" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn">Подтвердить заказ</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Часы работы</h3>
+                <p>Пн-Пт: 8:00 - 22:00</p>
+                <p>Суббота: 9:00 - 00:00</p>
+                <p>Воскресенье: 10:00 - 23:00</p>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p>Весенняя ул., 22, Кемерово</p>
+                <p>+7 (953) 066-17-10</p>
+                <p>info@kuba.ru</p>
+            </div>
+            <div class="footer-section">
+                <h3>Подписка</h3>
+                <form id="subscribeForm">
+                    <input type="email" placeholder="Ваш email" required>
+                    <button type="submit" class="btn">Подписаться</button>
+                </form>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 Кофейня "Куба". Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Куба - кофейня</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Куба - кофейня</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="menu.html">Меню</a></li>
+                <li><a href="reservation.html" class="active">Бронирование</a></li>
+                <li><a href="cart.html">Корзина</a></li>
+                <li><a href="contact.html">Контакты</a></li>
+            </ul>
+            <div class="burger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <section class="reservation">
+        <h2>Бронирование столика</h2>
+        <div class="reservation-info">
+            <p>Забронируйте столик заранее и получите бесплатный десерт к первому заказу!</p>
+        </div>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="name">Ваше имя</label>
+                <input type="text" id="name" placeholder="Иван Иванов" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+            </div>
+            <div class="form-group">
+                <label for="date">Дата и время</label>
+                <input type="datetime-local" id="date" required>
+            </div>
+            <div class="form-group">
+                <label for="guests">Количество гостей</label>
+                <select id="guests" required>
+                    <option value="">Выберите количество</option>
+                    <option value="1">1 человек</option>
+                    <option value="2">2 человека</option>
+                    <option value="3-4">3-4 человека</option>
+                    <option value="5+">5 и более</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment">Особые пожелания</label>
+                <textarea id="comment" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn">Забронировать</button>
+        </form>
+    </section>
+
+    <section class="reservation-benefits">
+        <h3>Почему стоит бронировать у нас?</h3>
+        <div class="benefits">
+            <div class="benefit">
+                <i class="fas fa-check-circle"></i>
+                <p>Гарантированное место в час пик</p>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-gift"></i>
+                <p>Бесплатный десерт при первом бронировании</p>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-percent"></i>
+                <p>Скидка 10% на заказ при бронировании</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+    <div class="footer-content">
+            <div class="footer-section">
+                <h3>Часы работы</h3>
+                <p>Пн-Пт: 8:00 - 22:00</p>
+                <p>Суббота: 9:00 - 00:00</p>
+                <p>Воскресенье: 10:00 - 23:00</p>
+            </div>
+            <div class="footer-section">
+                <h3>Контакты</h3>
+                <p>Весенняя ул., 22, Кемерово</p>
+                <p>+7 (953) 066-17-10</p>
+                <p>info@kuba.ru</p>
+            </div>
+            <div class="footer-section">
+                <h3>Подписка</h3>
+                <form id="subscribeForm">
+                    <input type="email" placeholder="Ваш email" required>
+                    <button type="submit" class="btn">Подписаться</button>
+                </form>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 Кофейня "Куба". Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
