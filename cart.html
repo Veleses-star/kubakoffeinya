@@ -3,9 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Куба - кофейня</title>
+    <title>Корзина - Кофейня "Куба"</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .form-group.checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .form-group.checkbox label {
+            margin: 0;
+            font-size: 14px;
+        }
+        .form-group.checkbox a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .form-group.checkbox a:hover {
+            text-decoration: underline;
+        }
+        .error {
+            border-color: red !important;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        /* Hamburger menu styles */
+        .nav-links {
+            display: flex;
+        }
+        .burger {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        @media screen and (max-width: 768px) {
+            .burger {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                width: 100%;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                background: #fff;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                margin: 10px 0;
+            }
+            .burger.active .fa-bars::before {
+                content: "\f00d"; /* Change to X icon when active */
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -42,20 +105,23 @@
 
     <div id="orderModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <span class="close-modal" onclick="closeModal()">×</span>
             <h3>Оформление заказа</h3>
-            <form id="orderForm">
+            <form id="orderForm" novalidate>
                 <div class="form-group">
                     <label for="orderName">Ваше имя</label>
-                    <input type="text" id="orderName" required>
+                    <input type="text" id="orderName" pattern="[A-Za-zА-Яа-я\s]{1,50}" maxlength="50" required>
+                    <div class="error-message" id="orderNameError">Имя может содержать только буквы и пробелы, до 50 символов</div>
                 </div>
                 <div class="form-group">
                     <label for="orderPhone">Телефон</label>
-                    <input type="tel" id="orderPhone" required>
+                    <input type="tel" id="orderPhone" pattern="\+7\s?\(\d{3}\)\s?\d{3}-\d{2}-\d{2}" placeholder="+7 (999) 123-45-67" required>
+                    <div class="error-message" id="orderPhoneError">Введите номер в формате +7 (999) 123-45-67</div>
                 </div>
                 <div class="form-group">
                     <label for="orderAddress">Адрес доставки</label>
-                    <input type="text" id="orderAddress">
+                    <input type="text" id="orderAddress" maxlength="100">
+                    <div class="error-message" id="orderAddressError">Адрес не должен превышать 100 символов</div>
                 </div>
                 <div class="form-group">
                     <label for="orderPayment">Способ оплаты</label>
@@ -64,10 +130,17 @@
                         <option value="cash">Наличные</option>
                         <option value="card">Карта онлайн</option>
                     </select>
+                    <div class="error-message" id="orderPaymentError">Выберите способ оплаты</div>
                 </div>
                 <div class="form-group">
                     <label for="orderComment">Комментарий к заказу</label>
-                    <textarea id="orderComment" rows="3"></textarea>
+                    <textarea id="orderComment" rows="3" maxlength="500"></textarea>
+                    <div class="error-message" id="orderCommentError">Комментарий не должен превышать 500 символов</div>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="orderPrivacy" required>
+                    <label for="orderPrivacy">Я согласен с <a href="privacy.html" target="_blank">политикой конфиденциальности</a></label>
+                    <div class="error-message" id="orderPrivacyError">Необходимо согласиться с политикой конфиденциальности</div>
                 </div>
                 <button type="submit" class="btn">Подтвердить заказ</button>
             </form>
@@ -90,8 +163,14 @@
             </div>
             <div class="footer-section">
                 <h3>Подписка</h3>
-                <form id="subscribeForm">
-                    <input type="email" placeholder="Ваш email" required>
+                <form id="subscribeForm" novalidate>
+                    <input type="email" placeholder="Ваш email" maxlength="100" required>
+                    <div class="error-message" id="subscribeEmailError">Введите действительный email</div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="subscribePrivacy" required>
+                        <label for="subscribePrivacy">Я согласен с <a href="privacy.html" target="_blank">политикой конфиденциальности</a></label>
+                        <div class="error-message" id="subscribePrivacyError">Необходимо согласиться с политикой конфиденциальности</div>
+                    </div>
                     <button type="submit" class="btn">Подписаться</button>
                 </form>
                 <div class="social-links">
@@ -105,6 +184,142 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script>
+        // Hamburger menu toggle
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+        const links = document.querySelectorAll('.nav-links a');
+
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            burger.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                burger.classList.remove('active');
+            });
+        });
+
+        // Form validation for subscription form
+        document.getElementById('subscribeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Email validation
+            const email = this.querySelector('input[type="email"]');
+            const emailError = document.getElementById('subscribeEmailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                email.classList.add('error');
+                emailError.style.display = 'block';
+                isValid = false;
+            } else {
+                email.classList.remove('error');
+                emailError.style.display = 'none';
+            }
+
+            // Privacy checkbox validation
+            const privacy = document.getElementById('subscribePrivacy');
+            const privacyError = document.getElementById('subscribePrivacyError');
+            if (!privacy.checked) {
+                privacyError.style.display = 'block';
+                isValid = false;
+            } else {
+                privacyError.style.display = 'none';
+            }
+
+            if (isValid) {
+                alert('Вы успешно подписались!');
+                this.reset();
+            }
+        });
+
+        // Form validation for order form
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Name validation
+            const name = document.getElementById('orderName');
+            const nameError = document.getElementById('orderNameError');
+            const nameRegex = /^[A-Za-zА-Яа-я\s]{1,50}$/;
+            if (!nameRegex.test(name.value)) {
+                name.classList.add('error');
+                nameError.style.display = 'block';
+                isValid = false;
+            } else {
+                name.classList.remove('error');
+                nameError.style.display = 'none';
+            }
+
+            // Phone validation
+            const phone = document.getElementById('orderPhone');
+            const phoneError = document.getElementById('orderPhoneError');
+            const phoneRegex = /^\+7\s?\(\d{3}\)\s?\d{3}-\d{2}-\d{2}$/;
+            if (!phoneRegex.test(phone.value)) {
+                phone.classList.add('error');
+                phoneError.style.display = 'block';
+                isValid = false;
+            } else {
+                phone.classList.remove('error');
+                phoneError.style.display = 'none';
+            }
+
+            // Address validation
+            const address = document.getElementById('orderAddress');
+            const addressError = document.getElementById('orderAddressError');
+            if (address.value.length > 100) {
+                address.classList.add('error');
+                addressError.style.display = 'block';
+                isValid = false;
+            } else {
+                address.classList.remove('error');
+                addressError.style.display = 'none';
+            }
+
+            // Payment method validation
+            const payment = document.getElementById('orderPayment');
+            const paymentError = document.getElementById('orderPaymentError');
+            if (!payment.value) {
+                payment.classList.add('error');
+                paymentError.style.display = 'block';
+                isValid = false;
+            } else {
+                payment.classList.remove('error');
+                paymentError.style.display = 'none';
+            }
+
+            // Comment validation
+            const comment = document.getElementById('orderComment');
+            const commentError = document.getElementById('orderCommentError');
+            if (comment.value.length > 500) {
+                comment.classList.add('error');
+                commentError.style.display = 'block';
+                isValid = false;
+            } else {
+                comment.classList.remove('error');
+                commentError.style.display = 'none';
+            }
+
+            // Privacy checkbox validation
+            const privacy = document.getElementById('orderPrivacy');
+            const privacyError = document.getElementById('orderPrivacyError');
+            if (!privacy.checked) {
+                privacyError.style.display = 'block';
+                isValid = false;
+            } else {
+                privacyError.style.display = 'none';
+            }
+
+            if (isValid) {
+                alert('Заказ успешно подтвержден!');
+                this.reset();
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>
