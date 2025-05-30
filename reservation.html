@@ -33,6 +33,41 @@
             margin-top: 5px;
             display: none;
         }
+        /* Hamburger menu styles */
+        .nav-links {
+            display: flex;
+        }
+        .burger {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        @media screen and (max-width: 768px) {
+            .burger {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                width: 100%;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                background: #fff;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .nav-links li {
+                margin: 10px 0;
+            }
+            .burger.active .fa-bars::before {
+                content: "\f00d"; /* Change to X icon when active */
+            }
+        }
     </style>
 </head>
 <body>
@@ -42,9 +77,9 @@
             <ul class="nav-links">
                 <li><a href="index.html">Главная</a></li>
                 <li><a href="menu.html">Меню</a></li>
-                <li><a href="reservation.html" class="active">Бронирование</a></li>
+                <li><a href="reservation.html">Бронирование</a></li>
                 <li><a href="cart.html">Корзина</a></li>
-                <li><a href="contact.html">Контакты</a></li>
+                <li><a href="contact.html" class="active">Контакты</a></li>
             </ul>
             <div class="burger">
                 <i class="fas fa-bars"></i>
@@ -52,68 +87,86 @@
         </nav>
     </header>
 
-    <section class="reservation">
-        <h2>Бронирование столика</h2>
-        <div class="reservation-info">
-            <p>Забронируйте столик заранее и получите бесплатный десерт к первому заказу!</p>
+    <section class="contact">
+        <h2>Наши контакты</h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h3>Адрес</h3>
+                        <p>Весенняя ул., 22, Кемерово</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h3>Телефон</h3>
+                        <p>+7 (953) 066-17-10</p>
+                        <p>Для бронирования: +7 (953) 066-17-10</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h3>Email</h3>
+                        <p>info@kuba.ru</p>
+                        <p>reservation@kuba.ru</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h3>Часы работы</h3>
+                        <p>Пн-Пт: 8:00 - 22:00</p>
+                        <p>Суббота: 9:00 - 00:00</p>
+                        <p>Воскресенье: 10:00 - 23:00</p>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-vk"></i> vk.com/kuba_coffee</a>
+                    <a href="#"><i class="fab fa-telegram"></i> t.me/kuba_coffee</a>
+                </div>
+            </div>
+            <div class="map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1470.8248136214065!2d86.07659380474816!3d55.352385915566465!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x42d80bdf6f2e628d%3A0x3a82db981d47be6!2z0JrRg9Cx0LAgLSDQutC-0YTQtdC50L3Rjw!5e0!3m2!1sru!2sru!4v1743345906515!5m2!1sru!2sru" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                </iframe>
+            </div>
         </div>
-        <form id="bookingForm" novalidate>
-            <div class="form-group">
-                <label for="name">Ваше имя</label>
-                <input type="text" id="name" placeholder="Иван Иванов" pattern="[A-Za-zА-Яа-я\s]{1,50}" maxlength="50" required>
-                <div class="error-message" id="nameError">Имя может содержать только буквы и пробелы, до 50 символов</div>
-            </div>
-            <div class="form-group">
-                <label for="phone">Телефон</label>
-                <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" pattern="\+7\s?\(\d{3}\)\s?\d{3}-\d{2}-\d{2}" required>
-                <div class="error-message" id="phoneError">Введите номер в формате +7 (999) 123-45-67</div>
-            </div>
-            <div class="form-group">
-                <label for="date">Дата и время</label>
-                <input type="datetime-local" id="date" required>
-                <div class="error-message" id="dateError">Выберите дату и время в пределах рабочих часов</div>
-            </div>
-            <div class="form-group">
-                <label for="guests">Количество гостей</label>
-                <select id="guests" required>
-                    <option value="">Выберите количество</option>
-                    <option value="1">1 человек</option>
-                    <option value="2">2 человека</option>
-                    <option value="3-4">3-4 человека</option>
-                    <option value="5+">5 и более</option>
-                </select>
-                <div class="error-message" id="guestsError">Выберите количество гостей</div>
-            </div>
-            <div class="form-group">
-                <label for="comment">Особые пожелания</label>
-                <textarea id="comment" rows="3" maxlength="500"></textarea>
-                <div class="error-message" id="commentError">Сообщение не должно превышать 500 символов</div>
-            </div>
-            <div class="form-group checkbox">
-                <input type="checkbox" id="bookingPrivacy" required>
-                <label for="bookingPrivacy">Я согласен с <a href="privacy.html" target="_blank">политикой конфиденциальности</a></label>
-                <div class="error-message" id="bookingPrivacyError">Необходимо согласиться с политикой конфиденциальности</div>
-            </div>
-            <button type="submit" class="btn">Забронировать</button>
-        </form>
     </section>
 
-    <section class="reservation-benefits">
-        <h3>Почему стоит бронировать у нас?</h3>
-        <div class="benefits">
-            <div class="benefit">
-                <i class="fas fa-check-circle"></i>
-                <p>Гарантированное место в час пик</p>
+    <section class="feedback">
+        <h2>Обратная связь</h2>
+        <form id="feedbackForm" novalidate>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="feedbackName">Ваше имя</label>
+                    <input type="text" id="feedbackName" pattern="[A-Za-zА-Яа-я\s]{1,50}" maxlength="50" required>
+                    <div class="error-message" id="feedbackNameError">Имя может содержать только буквы и пробелы, до 50 символов</div>
+                </div>
+                <div class="form-group">
+                    <label for="feedbackEmail">Email</label>
+                    <input type="email" id="feedbackEmail" maxlength="100" required>
+                    <div class="error-message" id="feedbackEmailError">Введите действительный email</div>
+                </div>
             </div>
-            <div class="benefit">
-                <i class="fas fa-gift"></i>
-                <p>Бесплатный десерт при первом бронировании</p>
+            <div class="form-group">
+                <label for="feedbackMessage">Сообщение</label>
+                <textarea id="feedbackMessage" rows="5" maxlength="500" required></textarea>
+                <div class="error-message" id="feedbackMessageError">Сообщение не должно превышать 500 символов</div>
             </div>
-            <div class="benefit">
-                <i class="fas fa-percent"></i>
-                <p>Скидка 10% на заказ при бронировании</p>
+            <div class="form-group checkbox">
+                <input type="checkbox" id="feedbackPrivacy" required>
+                <label for="feedbackPrivacy">Я согласен с <a href="privacy.html" target="_blank">политикой конфиденциальности</a></label>
+                <div class="error-message" id="feedbackPrivacyError">Необходимо согласиться с политикой конфиденциальности</div>
             </div>
-        </div>
+            <button type="submit" class="btn">Отправить</button>
+        </form>
     </section>
 
     <footer>
@@ -154,20 +207,32 @@
     </footer>
 
     <script>
-        // Set minimum date for datetime-local input
-        const dateInput = document.getElementById('date');
-        const today = new Date();
-        const minDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-        dateInput.setAttribute('min', minDate);
+        // Hamburger menu toggle
+        const burger = document.querySelector('.burger');
+        const navLinks = document.querySelector('.nav-links');
+        const links = document.querySelectorAll('.nav-links a');
 
-        // Form validation for booking form
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        burger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            burger.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                burger.classList.remove('active');
+            });
+        });
+
+        // Form validation for feedback form
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
             e.preventDefault();
             let isValid = true;
 
             // Name validation
-            const name = document.getElementById('name');
-            const nameError = document.getElementById('nameError');
+            const name = document.getElementById('feedbackName');
+            const nameError = document.getElementById('feedbackNameError');
             const nameRegex = /^[A-Za-zА-Яа-я\s]{1,50}$/;
             if (!nameRegex.test(name.value)) {
                 name.classList.add('error');
@@ -178,73 +243,34 @@
                 nameError.style.display = 'none';
             }
 
-            // Phone validation
-            const phone = document.getElementById('phone');
-            const phoneError = document.getElementById('phoneError');
-            const phoneRegex = /^\+7\s?\(\d{3}\)\s?\d{3}-\d{2}-\d{2}$/;
-            if (!phoneRegex.test(phone.value)) {
-                phone.classList.add('error');
-                phoneError.style.display = 'block';
+            // Email validation
+            const email = document.getElementById('feedbackEmail');
+            const emailError = document.getElementById('feedbackEmailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                email.classList.add('error');
+                emailError.style.display = 'block';
                 isValid = false;
             } else {
-                phone.classList.remove('error');
-                phoneError.style.display = 'none';
+                email.classList.remove('error');
+                emailError.style.display = 'none';
             }
 
-            // Date and time validation
-            const date = document.getElementById('date');
-            const dateError = document.getElementById('dateError');
-            const selectedDate = new Date(date.value);
-            const day = selectedDate.getDay();
-            const hours = selectedDate.getHours();
-            const minutes = selectedDate.getMinutes();
-            let isValidTime = false;
-
-            // Check operating hours based on day
-            if (day >= 1 && day <= 5) { // Mon-Fri: 8:00 - 22:00
-                isValidTime = hours >= 8 && (hours < 22 || (hours === 22 && minutes === 0));
-            } else if (day === 6) { // Sat: 9:00 - 00:00
-                isValidTime = hours >= 9 && (hours < 24 || (hours === 0 && minutes === 0));
-            } else if (day === 0) { // Sun: 10:00 - 23:00
-                isValidTime = hours >= 10 && (hours < 23 || (hours === 23 && minutes === 0));
-            }
-
-            if (!date.value || selectedDate < today || !isValidTime) {
-                date.classList.add('error');
-                dateError.style.display = 'block';
+            // Message validation
+            const message = document.getElementById('feedbackMessage');
+            const messageError = document.getElementById('feedbackMessageError');
+            if (message.value.length > 500 || message.value.length === 0) {
+                message.classList.add('error');
+                messageError.style.display = 'block';
                 isValid = false;
             } else {
-                date.classList.remove('error');
-                dateError.style.display = 'none';
-            }
-
-            // Guests validation
-            const guests = document.getElementById('guests');
-            const guestsError = document.getElementById('guestsError');
-            if (!guests.value) {
-                guests.classList.add('error');
-                guestsError.style.display = 'block';
-                isValid = false;
-            } else {
-                guests.classList.remove('error');
-                guestsError.style.display = 'none';
-            }
-
-            // Comment validation
-            const comment = document.getElementById('comment');
-            const commentError = document.getElementById('commentError');
-            if (comment.value.length > 500) {
-                comment.classList.add('error');
-                commentError.style.display = 'block';
-                isValid = false;
-            } else {
-                comment.classList.remove('error');
-                commentError.style.display = 'none';
+                message.classList.remove('error');
+                messageError.style.display = 'none';
             }
 
             // Privacy checkbox validation
-            const privacy = document.getElementById('bookingPrivacy');
-            const privacyError = document.getElementById('bookingPrivacyError');
+            const privacy = document.getElementById('feedbackPrivacy');
+            const privacyError = document.getElementById('feedbackPrivacyError');
             if (!privacy.checked) {
                 privacyError.style.display = 'block';
                 isValid = false;
@@ -253,7 +279,7 @@
             }
 
             if (isValid) {
-                alert('Бронирование успешно отправлено!');
+                alert('Форма успешно отправлена!');
                 this.reset();
             }
         });
