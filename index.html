@@ -79,8 +79,14 @@
             </div>
             <div class="footer-section">
                 <h3>Подписка</h3>
-                <form id="subscribeForm">
-                    <input type="email" placeholder="Ваш email" required>
+                <form id="subscribeForm" novalidate>
+                    <input type="email" placeholder="Ваш email" maxlength="100" required>
+                    <div class="error-message" id="subscribeEmailError">Введите действительный email</div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="subscribePrivacy" required>
+                        <label for="subscribePrivacy">Я согласен с <a href="privacy.html" target="_blank">политикой конфиденциальности</a></label>
+                        <div class="error-message" id="subscribePrivacyError">Необходимо согласиться с политикой конфиденциальности</div>
+                    </div>
                     <button type="submit" class="btn">Подписаться</button>
                 </form>
                 <div class="social-links">
