@@ -6,6 +6,34 @@
     <title>Куба - кофейня</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .form-group.checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .form-group.checkbox label {
+            margin: 0;
+            font-size: 14px;
+        }
+        .form-group.checkbox a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .form-group.checkbox a:hover {
+            text-decoration: underline;
+        }
+        .error {
+            border-color: red !important;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -79,20 +107,28 @@
 
     <section class="feedback">
         <h2>Обратная связь</h2>
-        <form id="feedbackForm">
+        <form id="feedbackForm" novalidate>
             <div class="form-row">
                 <div class="form-group">
                     <label for="feedbackName">Ваше имя</label>
-                    <input type="text" id="feedbackName" required>
+                    <input type="text" id="feedbackName" pattern="[A-Za-zА-Яа-я\s]{1,50}" maxlength="50" required>
+                    <div class="error-message" id="feedbackNameError">Имя может содержать только буквы и пробелы, до 50 символов</div>
                 </div>
                 <div class="form-group">
                     <label for="feedbackEmail">Email</label>
-                    <input type="email" id="feedbackEmail" required>
+                    <input type="email" id="feedbackEmail" maxlength="100" required>
+                    <div class="error-message" id="feedbackEmailError">Введите действительный email</div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="feedbackMessage">Сообщение</label>
-                <textarea id="feedbackMessage" rows="5" required></textarea>
+                <textarea id="feedbackMessage" rows="5" maxlength="500" required></textarea>
+                <div class="error-message" id="feedbackMessageError">Сообщение не должно превышать 500 символов</div>
+            </div>
+            <div class="form-group checkbox">
+                <input type="checkbox" id="feedbackPrivacy" required>
+                <label for="feedbackPrivacy">Я согласен с <a href="privacy.html" target="_blank">политикой конфиденциальности</a></label>
+                <div class="error-message" id="feedbackPrivacyError">Необходимо согласиться с политикой конфиденциальности</div>
             </div>
             <button type="submit" class="btn">Отправить</button>
         </form>
@@ -114,8 +150,14 @@
             </div>
             <div class="footer-section">
                 <h3>Подписка</h3>
-                <form id="subscribeForm">
-                    <input type="email" placeholder="Ваш email" required>
+                <form id="subscribeForm" novalidate>
+                    <input type="email" placeholder="Ваш email" maxlength="100" required>
+                    <div class="error-message" id="subscribeEmailError">Введите действительный email</div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="subscribePrivacy" required>
+                        <label for="subscribePrivacy">Я согласен с <a href="privacy.html" target="_blank">политикой конфиденциальности</a></label>
+                        <div class="error-message" id="subscribePrivacyError">Необходимо согласиться с политикой конфиденциальности</div>
+                    </div>
                     <button type="submit" class="btn">Подписаться</button>
                 </form>
                 <div class="social-links">
@@ -129,6 +171,99 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script>
+        // Form validation for feedback form
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Name validation
+            const name = document.getElementById('feedbackName');
+            const nameError = document.getElementById('feedbackNameError');
+            const nameRegex = /^[A-Za-zА-Яа-я\s]{1,50}$/;
+            if (!nameRegex.test(name.value)) {
+                name.classList.add('error');
+                nameError.style.display = 'block';
+                isValid = false;
+            } else {
+                name.classList.remove('error');
+                nameError.style.display = 'none';
+            }
+
+            // Email validation
+            const email = document.getElementById('feedbackEmail');
+            const emailError = document.getElementById('feedbackEmailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                email.classList.add('error');
+                emailError.style.display = 'block';
+                isValid = false;
+            } else {
+                email.classList.remove('error');
+                emailError.style.display = 'none';
+            }
+
+            // Message validation
+            const message = document.getElementById('feedbackMessage');
+            const messageError = document.getElementById('feedbackMessageError');
+            if (message.value.length > 500 || message.value.length === 0) {
+                message.classList.add('error');
+                messageError.style.display = 'block';
+                isValid = false;
+            } else {
+                message.classList.remove('error');
+                messageError.style.display = 'none';
+            }
+
+            // Privacy checkbox validation
+            const privacy = document.getElementById('feedbackPrivacy');
+            const privacyError = document.getElementById('feedbackPrivacyError');
+            if (!privacy.checked) {
+                privacyError.style.display = 'block';
+                isValid = false;
+            } else {
+                privacyError.style.display = 'none';
+            }
+
+            if (isValid) {
+                alert('Форма успешно отправлена!');
+                this.reset();
+            }
+        });
+
+        // Form validation for subscription form
+        document.getElementById('subscribeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Email validation
+            const email = this.querySelector('input[type="email"]');
+            const emailError = document.getElementById('subscribeEmailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                email.classList.add('error');
+                emailError.style.display = 'block';
+                isValid = false;
+            } else {
+                email.classList.remove('error');
+                emailError.style.display = 'none';
+            }
+
+            // Privacy checkbox validation
+            const privacy = document.getElementById('subscribePrivacy');
+            const privacyError = document.getElementById('subscribePrivacyError');
+            if (!privacy.checked) {
+                privacyError.style.display = 'block';
+                isValid = false;
+            } else {
+                privacyError.style.display = 'none';
+            }
+
+            if (isValid) {
+                alert('Вы успешно подписались!');
+                this.reset();
+            }
+        });
+    </script>
 </body>
 </html>
